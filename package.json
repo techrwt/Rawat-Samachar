@@ -1,0 +1,1 @@
+{ "name": "rawat-samachar-cms", "version": "1.0.0", "description": "Professional Hindi Digital News Platform & Desktop CMS", "main": "main.js", "scripts": { "start": "electron ." }, "devDependencies": { "electron": "^28.2.0" } } 

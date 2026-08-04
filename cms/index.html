@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>Rawat Samachar - Desktop CMS</title>
+  <style>
+    :root {
+      --primary: #c92a2a;
+      --primary-dark: #a61e1e;
+      --bg-dark: #1a1a1a;
+      --bg-sidebar: #212529;
+      --bg-content: #f8f9fa;
+      --text-main: #212529;
+      --border: #ced4da;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { display: flex; height: 100vh; background-color: var(--bg-content); color: var(--text-main); overflow: hidden; }
+    
+    /* Sidebar */
+    aside { width: 260px; background-color: var(--bg-sidebar); color: #fff; display: flex; flex-direction: column; }
+    .brand { padding: 20px; font-size: 20px; font-weight: bold; background: #000; color: var(--primary); text-align: center; border-bottom: 1px solid #333; }
+    .menu { list-style: none; padding: 10px 0; overflow-y: auto; flex: 1; }
+    .menu li { padding: 12px 20px; cursor: pointer; transition: 0.2s; font-size: 15px; border-left: 4px solid transparent; }
+    .menu li:hover, .menu li.active { background-color: #343a40; border-left-color: var(--primary); color: #fff; }
+
+    /* Main Content */
+    main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    header { background: #fff; padding: 15px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 22px; color: var(--bg-dark); }
+    
+    .content-body { flex: 1; padding: 25px; overflow-y: auto; }
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    /* Form Styles */
+    .form-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; }
+    .form-control { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 14px; }
+    textarea.form-control { resize: vertical; height: 150px; }
+    
+    .btn { background-color: var(--primary); color: #fff; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { background-color: var(--primary-dark); }
+    .btn-secondary { background-color: #6c757d; margin-left: 10px; }
+    .btn-secondary:hover { background-color: #5a6268; }
+
+    /* Status Log Box */
+    #status-box { margin-top: 15px; padding: 12px; background: #e9ecef; border-radius: 4px; font-family: monospace; font-size: 13px; display: none; max-height: 150px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <div class="brand">रावत समाचार CMS</div>
+    <ul class="menu">
+      <li onclick="switchView('dashboard', this)" class="active">डैशबोर्ड</li>
+      <li onclick="switchView('new-article', this)">नई खबर प्रकाशित करें</li>
+      <li onclick="switchView('drafts', this)">ड्राफ्ट</li>
+      <li onclick="switchView('media', this)">मीडिया</li>
+      <li onclick="switchView('categories', this)">श्रेणियाँ</li>
+      <li onclick="switchView('published', this)">प्रकाशित खबरें</li>
+      <li onclick="switchView('settings', this)">सेटिंग्स</li>
+      <li onclick="switchView('logs', this)">Logs</li>
+    </ul>
+  </aside>
+
+  <main>
+    <header>
+      <h1 id="page-title">डैशबोर्ड</h1>
+      <span style="font-size: 14px; color: #666;">Desktop CMS v1.0</span>
+    </header>
+
+    <div class="content-body">
+      
+      <!-- Dashboard View -->
+      <section id="dashboard" class="view-section active">
+        <h2>स्वागत है रावत समाचार डेस्कटॉप CMS में</h2>
+        <p style="margin-top: 10px; color: #555;">बाายें मेनू से 'नई खबर प्रकाशित करें' पर क्लिक करके सीधे वेबसाइट पर खबर लाइव करें।</p>
+      </section>
+
+      <!-- New Article View -->
+      <section id="new-article" class="view-section">
+        <form id="article-form">
+          <div class="form-grid">
+            <div>
+              <div class="form-group">
+                <label>न्यूज़ शीर्षक (Title)*</label>
+                <input type="text" id="title" class="form-control" required placeholder="यहाँ शीर्षक लिखें...">
+              </div>
+
+              <div class="form-group">
+                <label>परमालिंक (Permalink / Slug)*</label>
+                <input type="text" id="slug" class="form-control" required placeholder="auto-generated-slug">
+              </div>
+
+              <div class="form-group">
+                <label>शॉर्ट विवरण / SEO Description*</label>
+                <textarea id="description" class="form-control" style="height: 80px;" required placeholder="खबर का संक्षिप्त विवरण..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>न्यूज़ कंटेंट (HTML / Text Content)*</label>
+                <textarea id="content" class="form-control" required placeholder="विस्तृत समाचार यहाँ लिखें..."></textarea>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-group">
+                <label>श्रेणी (Category)*</label>
+                <select id="category" class="form-control">
+                  <option value="uttarakhand">उत्तराखंड</option>
+                  <option value="india">भारत</option>
+                  <option value="world">दुनिया</option>
+                  <option value="politics">राजनीति</option>
+                  <option value="crime">अपराध</option>
+                  <option value="education">शिक्षा</option>
+                  <option value="tech">तकनीक</option>
+                  <option value="sports">खेल</option>
+                  <option value="entertainment">मनोरंजन</option>
+                  <option value="auto">ऑटो</option>
+                  <option value="religion">धर्म</option>
+                  <option value="lifestyle">लाइफस्टाइल</option>
+                  <option value="sarkari-yojana">सरकारी योजनाएँ</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>लेखक (Author)</label>
+                <input type="text" id="author" class="form-control" value="रावत समाचार डेस्क">
+              </div>
+
+              <div class="form-group">
+                <label>फीचर्ड इमेज URL / Path</label>
+                <input type="text" id="image" class="form-control" placeholder="../assets/uploads/image.jpg">
+              </div>
+
+              <div class="form-group">
+                <label><input type="checkbox" id="isBreaking"> ब्रेकिंग न्यूज़ में दिखाएं</label>
+              </div>
+
+              <div class="form-group">
+                <label><input type="checkbox" id="isTrending" checked> ट्रेंडिंग में दिखाएं</label>
+              </div>
+
+              <button type="submit" class="btn" style="width: 100%;">प्रकाशित करें (Publish)</button>
+              <div id="status-box"></div>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Drafts View -->
+      <section id="drafts" class="view-section">
+        <h2>ड्राफ्ट्स (Drafts)</h2>
+        <p style="margin-top: 10px;">सुरक्षित किए गए ड्राफ्ट यहाँ दिखाई देंगे।</p>
+      </section>
+
+      <!-- Media View -->
+      <section id="media" class="view-section">
+        <h2>मीडिया लाइब्रेरी (Media)</h2>
+        <p style="margin-top: 10px;"> अपलोड की गई इमेजेस यहाँ प्रबंधित होंगी।</p>
+      </section>
+
+      <!-- Categories View -->
+      <section id="categories" class="view-section">
+        <h2>श्रेणियाँ (Categories)</h2>
+        <p style="margin-top: 10px;">सभी श्रेणियाँ सक्रिय हैं।</p>
+      </section>
+
+      <!-- Published News View -->
+      <section id="published" class="view-section">
+        <h2>प्रकाशित खबरें (Published Articles)</h2>
+        <p style="margin-top: 10px;">प्रकाशित लेखों की सूची।</p>
+      </section>
+
+      <!-- Settings View -->
+      <section id="settings" class="view-section">
+        <h2>सेटिंग्स (Settings)</h2>
+        <p style="margin-top: 10px;">सिस्टम और Git कॉन्फ़िगरेशन।</p>
+      </section>
+
+      <!-- Logs View -->
+      <section id="logs" class="view-section">
+        <h2>सिस्टम लॉग्स (Logs)</h2>
+        <p style="margin-top: 10px;">प्रकाशन इतिहास और Git लॉग्स।</p>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    function switchView(viewId, element) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.menu li').forEach(li => li.classList.remove('active'));
+      
+      document.getElementById(viewId).classList.add('active');
+      element.classList.add('active');
+      document.getElementById('page-title').innerText = element.innerText;
+    }
+
+    // Auto Slug Generator
+    document.getElementById('title').addEventListener('input', function(e) {
+      let val = e.target.value;
+      let slug = val.toLowerCase()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .trim()
+                    .replace(/\s+/g, '-');
+      document.getElementById('slug').value = slug;
+    });
+
+    // Form Submit & Publish Engine Trigger
+    document.getElementById('article-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const statusBox = document.getElementById('status-box');
+      statusBox.style.display = 'block';
+      statusBox.innerText = 'प्रक्रिया जारी है... कृपया प्रतीक्षा करें।';
+
+      const articleData = {
+        title: document.getElementById('title').value,
+        slug: document.getElementById('slug').value,
+        description: document.getElementById('description').value,
+        content: document.getElementById('content').value,
+        category: document.getElementById('category').value,
+        author: document.getElementById('author').value,
+        image: document.getElementById('image').value || '../assets/uploads/default.jpg',
+        isBreaking: document.getElementById('isBreaking').checked,
+        isTrending: document.getElementById('isTrending').checked,
+        date: new Date().toISOString(),
+        readingTime: '3 min read'
+      };
+
+      const result = await ipcRenderer.invoke('publish-article', articleData);
+
+      if (result.success) {
+        statusBox.style.color = 'green';
+        statusBox.innerText = 'सफलता: ' + result.message;
+        document.getElementById('article-form').reset();
+      } else {
+        statusBox.style.color = 'red';
+        statusBox.innerText = 'त्रुटि: ' + result.error;
+      }
+    });
+  </script>
+</body>
+</html>
