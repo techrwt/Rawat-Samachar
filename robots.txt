@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://techrwt.github.io/Rawat-Samachar/sitemap.xml
