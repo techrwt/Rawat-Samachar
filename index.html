@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>रावत समाचार - Professional Hindi News Platform</title>
+  <link rel="icon" type="image/png" href="assets/uploads/Favicon.png">
   <style>
     :root {
       --primary: #c92a2a;
@@ -18,7 +19,7 @@
     /* Header & Nav */
     header { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
     .top-bar { background: var(--bg-dark); color: #fff; padding: 8px 20px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
-    .brand-container { text-align: center; padding: 20px 0; background: var(--primary); color: #fff; }
+    .brand-container { text-align: center; padding: 15px 0; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; gap: 12px; }
     .brand-container h1 { font-size: 32px; font-weight: bold; letter-spacing: 1px; }
     
     nav { background: #212529; display: flex; justify-content: center; overflow-x: auto; padding: 0 10px; }
@@ -63,9 +64,11 @@
       <span id="current-date">दिनांक: --/--/----</span>
       <span>उत्तराखंड का अग्रणी डिजिटल न्यूज़ प्लेटफ़ॉर्म</span>
     </div>
-    <div class="brand-container">
-      <h1>रावत समाचार</h1>
-    </div>
+    <img src="assets/uploads/Banner.png" alt="Rawat Samachar Banner" style="width: 100%; max-height: 180px; object-fit: cover; display: block; border-bottom: 1px solid #dee2e6;">
+   <div class="brand-container" style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+  <img src="assets/uploads/Logo.jpg" alt="Logo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #fff;">
+  <h1>रावत समाचार</h1>
+</div>
     <nav>
       <a href="index.html">होम</a>
       <a href="category.html?cat=uttarakhand">उत्तराखंड</a>
